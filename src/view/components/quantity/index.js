@@ -1,20 +1,27 @@
 //工程量统计
 import React, { Component } from "react";
-// import "antd/dist/antd.css";
-// import { Tabs } from "antd";
+import "antd/dist/antd.css";
+import { Select } from "antd";
 import closeicon from "../../../images/close.png";
 import "./index.css";
 import LeftTree from "./classified/leftTree";
 import RightTable from "./classified/rightTable";
 import UnclassifiedLeftTree from "./unclassified/leftTree";
 import UnclassifiedRightTable from "./unclassified/rightTable";
-
+const Option = Select.Option;
 class Quantity extends Component {
   constructor() {
     super();
     this.state = {
       //配置左侧菜单
-      num: 1
+      num: 1,
+      selectList: [
+        {
+          id: 1,
+          value: "1212",
+          name: "pppp"
+        }
+      ]
     };
   }
   //--------------------------事件区域
@@ -26,7 +33,7 @@ class Quantity extends Component {
   }
   //--------------------------事件区域
   render() {
-    const { num } = this.state;
+    const { num, selectList } = this.state;
     return (
       <div className="Quantity">
         {true && (
@@ -48,6 +55,28 @@ class Quantity extends Component {
                   onClick={this.changeTab.bind(this, 2)}
                 >
                   未分类统计
+                </div>
+               
+                <div>
+                  <Select
+                    showSearch
+                    style={{ width: 200 }}
+                    placeholder="Select a person"
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                      option.props.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
+                  >
+                    {selectList.map(item => {
+                      return (
+                        <Option value={item.value} key={item.id}>
+                          {item.name}
+                        </Option>
+                      );
+                    })}
+                  </Select>
                 </div>
               </div>
               {num === 1 && (

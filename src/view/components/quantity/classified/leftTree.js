@@ -5,7 +5,7 @@ class LeftTree extends Component {
   render() {
     return (
       <div className="LeftTree">
-        <div>tree000</div>
+        <div>tree00fdfd0</div>
       </div>
     );
   }

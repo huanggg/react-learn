@@ -59,7 +59,7 @@
 .tabcontainer {
   width: 100%;
   height: calc(100% - 43px);
-  display: flex
+  display: flex;
   /* background: blue; */
 }
 .active {
