@@ -10,7 +10,6 @@ import { HashRouter as Router } from 'react-router-dom'
 ReactDOM.render(
   <Provider store={Store}>
     <Router>
-      {/* <App /> */}
       <MRoute />
     </Router>
   </Provider>,
