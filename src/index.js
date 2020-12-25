@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
+import "./index.css";  //这种方式引入的css样式，会作用于当前组件及其所有后代组件。
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from 'react-redux'
 import Store from './store/state/index.js'
