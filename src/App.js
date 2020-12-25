@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 // import logo from "./logo.svg";
 import Quantity from "./view/components/quantity/index.js";
-import "./view/layout/index.css";
-const Quantity2 = () => (
+import appCss from "./view/layout/layout.module.css";   //完全将css和组件分离开，又不会影响其他组件。
+const Quantity2 = () => ( 
   <div>
     <h2>热门</h2>
 
@@ -56,26 +56,25 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="Layout">
+      <div className={appCss.Layout}>
         <Router>
-          <div className="content">
-            <ul className="leftmuenu">
+          <div className={appCss.content}>
+            <ul className={appCss.leftmuenu}>
               {/* 菜单项 */}
               {this.state.numeList.map((item, index) => {
                 return (
-                  <li className="leftmuenu_item" key={item.id}>
+                  <li className={appCss.leftmuenu_item} key={item.id}>
                     <Link to={item.path}>
                       <img
                         src={item.icon}
                         alt=""
-
                       />
                     </Link>
                   </li>
                 );
               })}
             </ul>
-            <div className="rightview">
+            <div className={appCss.rightview}>
               <Switch>
                 <Route path="/app" exact component={Quantity} />
                 <Route path="/Quantity2" component={Quantity2} />
@@ -83,7 +82,7 @@ class App extends Component {
             </div>
           </div>
         </Router>
-      </div>
+      </div >
     );
   }
 }
