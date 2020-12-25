@@ -4,7 +4,7 @@ import "antd/dist/antd.css";
 import { Select } from "antd";
 import { connect } from "react-redux";
 import closeicon from "../../../images/close.png";
-import "./index.css";
+import quantityModule "./quantity.module.css";
 const Option = Select.Option;
 //状态管理 的state
 function mapStateToProps(state) {
@@ -49,23 +49,23 @@ class Quantity extends Component {
     const { num, selectList } = this.state;
     const { value, conut, changval } = this.props;
     return (
-      <div className="Quantity">
+      <div className={quantityModule.Quantity}>
         {true && (
-          <div className="container">
-            <div className="header">
+          <div className={quantityModule.container}>
+            <div className={quantityModule.header}>
               <span> 工程量统计{value}{conut}</span>
-              <img src={closeicon} alt="" className="closeIcon" />
+              <img src={closeicon} alt="" className={quantityModule.closeIcon} />
             </div>
-            <div className="tabContent">
-              <div className="tabNav">
+            <div className={quantityModule.tabContent}>
+              <div className={quantityModule.tabNav}>
                 <div
-                  className={`tabitem  ${num === 1 ? "active" : null}`}
+                  className={`quantityModule.tabitem  ${num === 1 ? quantityModule.active : null}`}
                   onClick={this.changeTab.bind(this, 1)}
                 >
                   已分类统计
                 </div>
                 <div
-                  className={`tabitem  ${num === 2 ? "active" : null}`}
+                  className={`quantityModule.tabitem  ${num === 2 ? quantityModule.active : null}`}
                   onClick={this.changeTab.bind(this, 2)}
                 >
                   未分类统计
