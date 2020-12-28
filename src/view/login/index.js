@@ -18,7 +18,7 @@ class Layout extends Component {
     render() {
         return (
             <div className="Layout">
-                <div onClick={this.changeRouter.bind(this)}>
+                <div onClick={this.changeRouter.bind(this)}>  //  <div onClick={()=>this.changeRouter()}>
                     登录页
                </div>
             </div>
