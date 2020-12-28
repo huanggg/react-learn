@@ -44,7 +44,11 @@ class Quantity extends Component {
     });
    this.setState((state, props) => ({
        counter: state.counter + props.increment
-   }));
+   }),()=>{
+
+     console.log(this.state.count);//这里相当于Vue 的$nextTick(()=>{})
+
+    }));
   }
   //--------------------------事件区域
   render() {
