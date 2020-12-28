@@ -42,7 +42,9 @@ class Quantity extends Component {
     this.setState({
       num: data
     });
-
+   this.setState((state, props) => ({
+       counter: state.counter + props.increment
+   }));
   }
   //--------------------------事件区域
   render() {
