@@ -1,0 +1,45 @@
+父组件：
+
+import React, { Component } from "react";
+import Child from './child'
+export default class Parent extends Component {
+
+componentDidMount(){
+    //调用子组件
+    this.child.test('参数')
+}
+
+onRef(ref){this.child = ref}
+
+render() {
+    return (
+      <div>
+        <Child onRef={this.onRef} />
+      </div>
+    );
+  }
+}
+
+
+子组件：
+
+import React, { Component } from "react";
+
+export default class Child extends Component {
+
+componentDidMount(){
+    this.props.onRef(this)
+}
+//被调用方法
+test(val){
+    alert('我是测试方法'+val)
+}
+
+render() {
+    return (
+      <div>
+            我是子组件
+      </div>
+    );
+  }
+}
