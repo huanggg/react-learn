@@ -11,14 +11,14 @@ class Layout extends Component {
     }
     changeRouter() {
         this.props.history.push({
-            pathname: '/app',
+            pathname: '/app/Quantity',
             search: `?id=121212&&name=565545`
         });
     }
     render() {
         return (
             <div className="Layout">
-                <div onClick={this.changeRouter.bind(this)}>  //  <div onClick={()=>this.changeRouter()}>
+                <div onClick={this.changeRouter.bind(this)}>
                     登录页
                </div>
             </div>
