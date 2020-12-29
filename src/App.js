@@ -1,16 +1,25 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+// import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import {
+  HashRouter,
+  BrowserRouter,
+  Redirect,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 // import logo from "./logo.svg";
 import Quantity from "./view/components/quantity/index.js";
-import appCss from "./view/layout/layout.module.css";   //完全将css和组件分离开，又不会影响其他组件。
-const Quantity2 = () => ( 
+import Quantity3 from "./view/components/quantity3/index.js";
+import appCss from "./view/layout/layout.module.css";
+const Quantity2 = () => (
   <div>
     <h2>热门</h2>
 
     <div>
       <Link to={
         {
-          pathname: `/app`,
+          pathname: `/app/Quantity`,
           query: { 'key': '999999' }
         }
       }>
@@ -28,16 +37,24 @@ class App extends Component {
       numeList: [
         {
           id: 1,
-          name: "工程量统计",
-          path: "/app",
+          name: "工程量统计1",
+          path: "/app/Quantity",
           icon: require("./images/Quantity_pre.png"),
           icon2: require("./images/Quantity_nor.png"),
           icon3: require("./images/Quantity_pre.png")
         },
         {
           id: 2,
-          name: "工程量统计22e",
-          path: "Quantity2",
+          name: "工程量统计2",
+          path: "/app/Quantity2",
+          icon: require("./images/2.nor.png"),
+          icon2: require("./images/2.nor.png"),
+          icon3: require("./images/2.pre.png")
+        },
+        {
+          id: 3,
+          name: "工程量统计3",
+          path: "/app/Quantity3",
           icon: require("./images/2.nor.png"),
           icon2: require("./images/2.nor.png"),
           icon3: require("./images/2.pre.png")
@@ -57,7 +74,7 @@ class App extends Component {
   render() {
     return (
       <div className={appCss.Layout}>
-        <Router>
+        <HashRouter>
           <div className={appCss.content}>
             <ul className={appCss.leftmuenu}>
               {/* 菜单项 */}
@@ -76,12 +93,16 @@ class App extends Component {
             </ul>
             <div className={appCss.rightview}>
               <Switch>
-                <Route path="/app" exact component={Quantity} />
-                <Route path="/Quantity2" component={Quantity2} />
+                {/* 路由嵌套 */}
+                <Route path="/app/Quantity" exact component={Quantity} />
+                <Route path="/app/Quantity2" component={Quantity2} />
+                <Route path="/app/Quantity3" component={Quantity3} />
+                {/* // 子路由找不到，重定向到第一个子路由 */}
+                <Redirect from='/app' to='/app/Quantity'></Redirect>
               </Switch>
             </div>
           </div>
-        </Router>
+        </HashRouter>
       </div >
     );
   }
