@@ -1,0 +1,165 @@
+
+SpringBoot 获取前端页面参数的集中方式总结
+SpringBoot的一个好处就是通过注解可以轻松获取前端页面的参数，之后尅将参数经过一系列处理传送到后台数据库，前端时间正好用到。大致分为一下几种：
+1.指定前端URL请求参数名称与方法名称一致，这种方式简单来说就是URL请求格式中参数需要与方法的参数名称对应上，举个例子，这么一个URL请求：http://localhost:8080/0919/test1?name = xxx & pwd = yyy 在指定的控制器类上加上Controller 注解，同时指定RequestMapping注解即可，当请求路径参数与方法参数匹配上时会自动注入。
+
+@RequestMapping("/test1")
+@ResponseBody
+public String test1( String name, String pwd )
+{
+    String s1 = name;
+    String s2 = pwd;
+    String s1 + s2;  
+}
+　　
+
+启动主程序，访问浏览器出现下图，表明注入参数成功：
+
+1
+xxxyyy
+　　
+
+2.第二种方式是通过HttpServletRequest来获取前端页面参数，代码如下。简单来说就是通过调动Request的getParameter方法来获取参数，比如访问路径类似这样：http://localhost:8080/0919/test2?firstName = zhang & lastName = san
+
+@RequstMapping("/test2")
+@ResponseBody
+public String test2( HttpServletRequest request )
+{
+     String firstName = request.getParamenter("firstName");
+     String lastName = request.getParameter("lastName");
+     return firstName = lastName;  
+}
+　　
+
+启动主程序，访问浏览器出现如下结果，表明注入成功，这种方式也可以表单参数，一般get和post请求都可以
+
+1
+zhangsan
+　　
+
+3.第三种方式是通过创建一个JavaBean对象来封装表单参数或者是请求URL路径中参数，具体代码如下
+
+@RequestMapping("/test3")
+@ResponseBody
+public String test3( Student student )
+{
+   String firstName = student.getFirstName();
+   String lastName = student.getLastName();
+    return firstName = lastName;  
+}
+　　
+对应的JavaBean对象如下：
+public class Student
+{
+    private String firstName;
+    private String lastName;
+     
+    public Student()
+    {
+        super();
+    }
+     
+    public String getFirstName()
+    {
+        return firstName;
+    }
+     
+    public void setFirstName( String firstName )
+    {
+        this.firstName = firstName;
+    }
+     
+    public String getLastName()
+    {
+        return lastName;
+    }
+     
+    public void setLastName( String lastName )
+    {
+        this.lastName = lastName;
+    }
+}
+　　
+
+简单来说就是将表单参数作为一个JavaBean类的属性，通过设置方法参数为一个JavaBean对象，之后在方法中通过调用对象的get方法来获取表单传过来的参数，比如访问路径是：http://localhost:8080/0919/test3?firstName = zhang & lastName = san 启动主程序，出现如下结果，表明参数注入成功，这种方式如果请求的表单参数很多，可以考虑使用这种方式。
+
+1
+zhangsan
+　　
+
+4.第四种方式是通过PathVariable注解来绑定请求路径的参数，参考代码如下
+
+@RequestMapping( value = "/test4/{a}/{bbb}")
+@ResponseBody
+public String test4( @PathVariable("a") String aaa, @PathVariable String bbb )
+{
+    return aaa+bbb;
+}
+　　
+
+这种情况简单来说就是URL中采用动态绑定的形式表示。之后在方法中指定的参数通过PathVariable来将请求的URL中的参数绑定到方法参数，在这里不指定PathVariable注解的具体值时按照请求路径动态变量的顺序与注解顺序一致即可注入。如果想指定注入，那么指定PathVariable注解的值与动态变量名一致即可特定注入，比如请求路径是：http://localhost:8080/0919/test4/111/222
+
+启动主程序，出现如下结果，表明注入成功：
+
+1
+111222
+　　
+
+5.第五种方式是通过RequestParam注解来获取，具体代码如下：
+
+@RequestMapping( value = "/test5")
+@ResponseBody
+public String test5( @RequestParam("aaa") String aac,@RequstParam("bbb") String bbb)
+{
+    return aac+bbb;
+}
+　　
+
+这种方式是通过URL路径的形式将请求路径上的参数绑定都方法参数上，简单来说就是实参值赋给响应的形参，与上面这种方式的区别是前者是动态URL模板注入，这里是普通的URL请求注入，比如访问这个路径：
+
+http://localhost:8080/0919/test5?aaa = 111 & bbb = 4444
+
+启动主程序，出现如下结果，表明注入成功
+
+1
+1114444
+　　
+
+6.第六中方式是通过ModelAttribute方式来注入参数的，具体代码如下：
+
+@RequestMapping( value = "/kkk")
+public String kkk()
+{
+    return "test2";
+}
+ 
+@RequestMapping( value = "/test6")
+public String test6( @ModelAttributer("kkk") Student s )
+{
+    return "test3";
+}
+　　
+
+这种方式一般是通过在页面展示，所以这里创建两个页面做测试test2.jsp和test3.jsp进行测试
+
+<body>
+    <form action = "<%= request.getContextPath()%>/0919/test6" method = "post">
+        firstName: <input type = "text" name = "firstName"/><br/>
+        lastName<input type  = "text" name = "lastName"><br/>
+        <input type = "submit" value = "提交"/>
+        <input type = "reset" value = "重置">
+    </form>
+</body>
+　　
+<body>
+    ${kkk.firstName} + ${kkk.lastName}
+</body>
+　　
+
+简单来说就是通过ModelAttribute注解将请求参数封装到指定的Javabean对象，同时通过value值将这接受了表单参数对象赋给value，这里将S赋给了一个变量名为kkk的存在，之后就可以在JSP页面通过这个变量名使用el表达式来获取传过来的参数，测试路径为：http://localhost:8080/0919/kkk
+
+输出结果为：
+
+1
+bbb+aaa
+　　
